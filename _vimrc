@@ -166,6 +166,27 @@ let b:match_wrods='\<begin\>:\<end\>'
                   \ .  '\<module\>:\<endmodule\>' 
                   \ .  '\<case\>:\<endcase\>' "can added any pairs like this 
 
+""对齐verilog instance例化
+"vmap <Leader>a :'<,'>s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
+"nmap <Leader>a :s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
+"上述命令由下面函数替代，功能几乎等价，只是格式化得更好一点
+vmap <Leader>a call V_align_line()<CR>
+nmap <Leader>a call V_align_line()<CR>
+function V_align_line()
+    let line_begin = line("'<")
+    let line_end   = line("'>")
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        "参考函数：match matchlist subtitute
+        let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
+        let inst_name = get(line_comp, 1)
+        let con_name  = get(line_comp, 2)
+        let other     = get(line_comp, 3)
+        let line_out  = printf('    .%-20s(%-20s)%s', inst_name, con_name, other)
+        call setline(i, line_out)
+    endfor
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "进行版权声明的设置
 "添加或更新头
@@ -212,20 +233,48 @@ function TitleDet()
     call AddTitle()
 endfunction
 
-function! Test() 
-    let a=line(".")
-perl << EOF
-       print (a);
-       print (b);
-EOF
-endfunction
-"///"EOF"必须在行首(前面不能有前导空格)
-
-"function! WhitePearl()
-"perl << EOF
-"	VIM::Msg("pearls are nice for necklaces");
-"	VIM::Msg("rubys for rings");
-"	VIM::Msg("pythons for bags");
-"	VIM::Msg("tcls????");
-"EOF
-"endfunction
+"comment for perl plugin must use the fixed version
+""function! Align_inst() 
+""    let line_start=line("'<")
+""    let line_end=line("'>")
+""    perl Align(line_start, line_end)
+""endfunction
+"""///"EOF"必须在行首(前面不能有前导空格)
+""perl << EOF
+""sub align_inst{
+""\\  ($success_1,$line_begin) = VIM::Eval('line("'<")');
+""\\  ($success_2,$line_end)   = VIM::Eval('line("'>")');
+""    $line_begin = $_[0];
+""    $line_end   = $_[1];
+""    @lines = $curbuf->Get($line_begin .. $line_end); 
+""    @lines_out=[];
+""    $len_inst_max = 0;
+""    $len_con_max  = 0;
+""    foreach $line in @lines{
+""        if($line =~ m/\s*\.(?<inst_wire>\w+)\(?<con_wire>\w+\).*/){
+""            $len_inst = len($inst_wire)    
+""            if($len_inst > $len_inst_max){
+""                $len_inst_max = $len_inst;
+""            }
+""            
+""            if($len_con > $len_con_max){
+""                $len_con_max = $len_con;
+""            }
+""        }   
+""    }
+""    
+""    $len_inst_out = $len_inst_max + 1;
+""    $len_con_out = $len_con_max + 1;
+""    foreach $line in @lines{
+""        if($line =~ m/\s*\.(?<inst_wire>\w+)\(?<con_wire>\w+\),(?<other>.*)/){
+""            $line_out_inst = sprintf("%*s",$len_inst_out,$inst_wire);
+""            $line_out_con  = sprintf("%*s",$len_con_out,$con_wire);
+""        }   
+""        $line_out = "    ." .. $line_out_inst .. "(" .. $line_out_con .. ")," .. $other;
+""        push @lines_out, $line_out;
+""    }
+""    
+""    $curbuf->Delete($line_begin, $line_end); 
+""    $curbuf->Set($line_begin, @lines_out); 
+""}
+""EOF
