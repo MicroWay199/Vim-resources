@@ -170,9 +170,9 @@ let b:match_wrods='\<begin\>:\<end\>'
 "vmap <Leader>a :'<,'>s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "nmap <Leader>a :s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "上述命令由下面函数替代，功能几乎等价，只是格式化得更好一点
-vmap <Leader>a call V_align_line()<CR>
-nmap <Leader>a call V_align_line()<CR>
-function V_align_line()
+vmap <Leader>is :call V_align_inst_line()<CR>
+nmap <Leader>is :call V_align_inst_line()<CR>
+function V_align_inst_line()
     let line_begin = line("'<")
     let line_end   = line("'>")
     for i in range(line_begin, line_end)
@@ -187,6 +187,27 @@ function V_align_line()
     endfor
 endfunction
 
+vmap <Leader>if :call V_align_io()<CR>
+nmap <Leader>if :call V_align_io()<CR>
+function V_align_io()
+    let line_begin = line("'<")
+    let line_end   = line("'>")
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        "参考函数：match matchlist subtitute
+        let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\(.*\)$')
+        echo line_comp
+        let io    = get(line_comp, 1)
+        let regw  = get(line_comp, 2)
+        let width = get(line_comp, 3)
+        let name  = get(line_comp, 4)
+        let other = get(line_comp, 5)
+        "echo line_comp
+        let line_out  = printf('    %-8s %-6s %-7s %-7s %s', io, regw, width, name, other)
+        "echo line_out
+        call setline(i, line_out)
+    endfor
+endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "进行版权声明的设置
 "添加或更新头
