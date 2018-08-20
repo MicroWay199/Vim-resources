@@ -203,7 +203,7 @@ function V_align_io()
         let name  = get(line_comp, 4)
         let other = get(line_comp, 5)
         "echo line_comp
-        let line_out  = printf('    %-8s %-6s %-7s %-7s %s', io, regw, width, name, other)
+        let line_out  = printf('    %-8s %-6s %-7s %-7s %-s', io, regw, width, name, other)
         "echo line_out
         call setline(i, line_out)
     endfor
