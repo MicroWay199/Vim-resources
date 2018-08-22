@@ -177,13 +177,15 @@ function V_align_inst_line()
     let line_end   = line("'>")
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
-        "参考函数：match matchlist subtitute
-        let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
-        let inst_name = get(line_comp, 1)
-        let con_name  = get(line_comp, 2)
-        let other     = get(line_comp, 3)
-        let line_out  = printf('    .%-20s(%-20s)%s', inst_name, con_name, other)
-        call setline(i, line_out)
+        if (line_str =~ '^\s*\..*')
+            "参考函数：match matchlist subtitute
+            let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
+            let inst_name = get(line_comp, 1)
+            let con_name  = get(line_comp, 2)
+            let other     = get(line_comp, 3)
+            let line_out  = printf('    .%-20s(%-20s)%s', inst_name, con_name, other)
+            call setline(i, line_out)
+        endif
     endfor
 endfunction
 
@@ -194,18 +196,20 @@ function V_align_io()
     let line_end   = line("'>")
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
-        "参考函数：match matchlist subtitute
-        let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\(.*\)$')
-        echo line_comp
-        let io    = get(line_comp, 1)
-        let regw  = get(line_comp, 2)
-        let width = get(line_comp, 3)
-        let name  = get(line_comp, 4)
-        let other = get(line_comp, 5)
-        "echo line_comp
-        let line_out  = printf('    %-8s %-6s %-7s %-7s %-s', io, regw, width, name, other)
-        "echo line_out
-        call setline(i, line_out)
+        if (line_str =~ '^\s*\(input\|inout\|output.*\)')
+            "参考函数：match matchlist subtitute
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\(.*\)$')
+            echo line_comp
+            let io    = get(line_comp, 1)
+            let regw  = get(line_comp, 2)
+            let width = get(line_comp, 3)
+            let name  = get(line_comp, 4)
+            let other = get(line_comp, 5)
+            "echo line_comp
+            let line_out  = printf('    %-8s %-6s %-7s %-7s %-s', io, regw, width, name, other)
+            "echo line_out
+            call setline(i, line_out)
+        endif
     endfor
 endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
