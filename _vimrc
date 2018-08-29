@@ -198,7 +198,7 @@ function V_align_io()
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output.*\)')
             "²Î¿¼º¯Êý£ºmatch matchlist subtitute
-            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\(.*\)$')
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(.*\)$')
             echo line_comp
             let io    = get(line_comp, 1)
             let regw  = get(line_comp, 2)
@@ -206,7 +206,7 @@ function V_align_io()
             let name  = get(line_comp, 4)
             let other = get(line_comp, 5)
             "echo line_comp
-            let line_out  = printf('    %-8s %-6s %-7s %-7s %-s', io, regw, width, name, other)
+            let line_out  = printf('    %-8s %-6s %-7s %-20s %-s', io, regw, width, name, other)
             "echo line_out
             call setline(i, line_out)
         endif
