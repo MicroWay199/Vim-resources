@@ -102,6 +102,8 @@ set gcr=a:blinkon0 "取消光标闪烁
 set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]    "显示文件名: 总行数, 总的字符数
 set ruler
 set magic
+"colorscheme night"设置主题 
+"colorscheme biogoo"设置主题 
 colorscheme molokai"设置主题 
 set cc=80 "hight 80th column  cc means colorcolumn also set corlorcolumn=80 work
 set cursorline "高亮显示当前行
@@ -179,7 +181,8 @@ function V_align_inst_line()
         let line_str  = getline(i)
         if (line_str =~ '^\s*\..*')
             "参考函数：match matchlist subtitute
-            let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
+          ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
+            let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}}\))\(.*\)')
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
             let other     = get(line_comp, 3)
