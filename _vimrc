@@ -177,16 +177,70 @@ nmap <Leader>is :call V_align_inst_line()<CR>
 function V_align_inst_line()
     let line_begin = line("'<")
     let line_end   = line("'>")
+    let max_inst = 0
+    let max_con = 0
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\..*')
             "参考函数：match matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
-            let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}}\))\(.*\)')
+           "let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}\))\(.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\(\w*\S*\)\s*)\(.*\)')
+           "echo line_comp
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
             let other     = get(line_comp, 3)
-            let line_out  = printf('    .%-20s(%-20s)%s', inst_name, con_name, other)
+            let len_inst  = strlen(inst_name)
+            let len_con   = strlen(con_name)
+
+            if(len_inst > max_inst)
+                let max_inst = len_inst
+            endif
+            if(len_con > max_con)
+                let max_con = len_con
+            endif
+            
+            if(len_inst > 30)
+                echom (inst_name . "variable name too long")
+            endif
+            if(len_con > 30)
+                echom (con_name . "variable name too long")
+            endif
+        endif
+    endfor
+
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*\..*')
+            "参考函数：match matchlist subtitute
+          ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\(\w*\S*\)\s*)\(.*\)')
+           "echo line_comp
+            let inst_name = get(line_comp, 1)
+            let con_name  = get(line_comp, 2)
+            let other     = get(line_comp, 3)
+            if(max_inst < 10)
+                let inst_name = printf('%-10s', inst_name)
+            elseif(max_inst < 20)
+                let inst_name = printf('%-20s', inst_name)
+            elseif(max_inst < 25)
+                let inst_name = printf('%-25s', inst_name)
+            else
+                let inst_name = printf('%-30s', inst_name)
+            endif
+
+            if(max_con < 10)
+                let con_name = printf('%-10s', con_name)
+            elseif(max_con < 20)
+                let con_name = printf('%-20s', con_name)
+            elseif(max_con < 25)
+                let con_name = printf('%-25s', con_name)
+            else
+                let con_name = printf('%-30s', con_name)
+            endif
+           "echo max_inst . "  " . max_con
+
+            let line_out  = printf('    .%-s(%-s)%s', inst_name, con_name, other)
             call setline(i, line_out)
         endif
     endfor
@@ -197,19 +251,155 @@ nmap <Leader>if :call V_align_io()<CR>
 function V_align_io()
     let line_begin = line("'<")
     let line_end   = line("'>")
+    let max_len = 0
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output.*\)')
             "参考函数：match matchlist subtitute
-            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(.*\)$')
-            echo line_comp
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(,\|\)\s*\(\S.*\)$')
+           "echo line_comp
             let io    = get(line_comp, 1)
             let regw  = get(line_comp, 2)
             let width = get(line_comp, 3)
             let name  = get(line_comp, 4)
-            let other = get(line_comp, 5)
+            let comma = get(line_comp, 5)
+            let other = get(line_comp, 6)
+            let len_name = strlen(name)
+            if(len_name > max_len)
+                let max_len = len_name
+            endif
+            if(len_name > 30)
+                echom(name . "variable name too long")
+            endif
+        endif
+    endfor
+
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*\(input\|inout\|output.*\)')
+            "参考函数：match matchlist subtitute
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(,\|\)\s*\(\S.*\)$')
+           "echo line_comp
+            let io    = get(line_comp, 1)
+            let regw  = get(line_comp, 2)
+            let width = get(line_comp, 3)
+            let name  = get(line_comp, 4)
+            let comma = get(line_comp, 5)
+            let other = get(line_comp, 6)
+
+            if(max_len < 10)
+                let name = printf('%-10s', name)
+            elseif(max_len < 20)
+                let name = printf('%-20s', name)
+            elseif(max_len < 25)
+                let name = printf('%-25s', name)
+            else
+                let name = printf('%-30s', name)
+            endif
             "echo line_comp
-            let line_out  = printf('    %-8s %-6s %-7s %-20s %-s', io, regw, width, name, other)
+            let line_out  = printf('    %-8s %-6s %-7s %-s %1s %-s', io, regw, width, name, comma, other)
+            "echo line_out
+            call setline(i, line_out)
+        endif
+    endfor
+endfunction
+
+vmap <Leader>ie :call V_align_eval()<CR>
+nmap <Leader>ie :call V_align_eval()<CR>
+function V_align_eval()
+    let line_begin = line("'<")
+    let line_end   = line("'>")
+    let max_left = 0
+    let max_right = 0
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*\w*.*')
+            if (line_str =~ '^\s*assign\s+.*')
+          "  "参考函数：match matchlist subtitute
+                let line_comp = matchlist(line_str,'^\s*assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let name_left    = get(line_comp, 1)
+                let eq_s         = get(line_comp, 2)
+                let name_right   = get(line_comp, 3)
+                let comment      = get(line_comp, 4)
+                let assign_s     = "assign"
+            elseif (line_str =~ '^\s*w.*')
+                let line_comp = matchlist(line_str,'^\s*\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let name_left    = get(line_comp, 1)
+                let eq_s         = get(line_comp, 2)
+                let name_right   = get(line_comp, 3)
+                let comment      = get(line_comp, 4)
+                let assign_s     = ""
+            endif
+            "endif
+            let len_left  = strlen(name_left)
+            let len_right = strlen(name_right)
+            if(len_left > max_left)
+                let max_left = len_left
+            endif
+            if(len_right > max_right)
+                let max_right = len_right
+            endif
+
+            if(len_left > 30)
+                echom(name_left . "variable name too long")
+            endif
+
+            if(len_right > 30)
+                echom(name_right . "variable name too long")
+            endif
+        endif
+    endfor
+
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*\w*.*')
+            if (line_str =~ '^\s*assign\s+.*')
+            "参考函数：match matchlist subtitute
+                let line_comp = matchlist(line_str,'^\s*assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let name_left    = get(line_comp, 1)
+                let eq_s         = get(line_comp, 2)
+                let name_right   = get(line_comp, 3)
+                let comment      = get(line_comp, 4)
+                let assign_s     = "assign"
+            elseif (line_str =~ '^\s*w.*')
+                let line_comp = matchlist(line_str,'^\s*\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let name_left    = get(line_comp, 1)
+                let eq_s         = get(line_comp, 2)
+                let name_right   = get(line_comp, 3)
+                let comment      = get(line_comp, 4)
+                let assign_s     = ""
+            endif
+
+            if(max_left < 10)
+                let name_left = printf('%-10s', name_left)
+            elseif(max_left < 20)
+                let name_left = printf('%-20s', name_left)
+            elseif(max_left < 25)
+                let name_left = printf('%-25s', name_left)
+            else
+                let name_left = printf('%-30s', name_left)
+            endif
+
+            if(max_right < 10)
+                let name_right = printf('%-10s', name_right)
+            elseif(max_right < 20)
+                let name_right = printf('%-20s', name_right)
+            elseif(max_right < 25)
+                let name_right = printf('%-25s', name_right)
+            else
+                let name_right = printf('%-30s', name_right)
+            endif
+
+            "echo line_comp
+            let line_out  = printf('    %-s %-s %-2s %-s;%-s', assign_s, name_left, eq_s, name_right, comment)
             "echo line_out
             call setline(i, line_out)
         endif
