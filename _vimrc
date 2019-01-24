@@ -311,30 +311,38 @@ function V_align_eval()
     let line_end   = line("'>")
     let max_left = 0
     let max_right = 0
+    let indent_s     = " "
+    let name_left    = " "
+    let eq_s         = " "
+    let name_right   = " "
+    let comment      = " "
+    let assign_s     = " "
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
           "  "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'^\s*assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
-                let name_left    = get(line_comp, 1)
-                let eq_s         = get(line_comp, 2)
-                let name_right   = get(line_comp, 3)
-                let comment      = get(line_comp, 4)
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
                 let assign_s     = "assign"
-            elseif (line_str =~ '^\s*w.*')
-                let line_comp = matchlist(line_str,'^\s*\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+            elseif (line_str =~ '^\s*\w.*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
-                let name_left    = get(line_comp, 1)
-                let eq_s         = get(line_comp, 2)
-                let name_right   = get(line_comp, 3)
-                let comment      = get(line_comp, 4)
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
                 let assign_s     = ""
             endif
-            "endif
+
             let len_left  = strlen(name_left)
             let len_right = strlen(name_right)
             if(len_left > max_left)
@@ -358,23 +366,25 @@ function V_align_eval()
         let line_str  = getline(i)
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
-            "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'^\s*assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+          "  "参考函数：match matchlist subtitute
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
-                let name_left    = get(line_comp, 1)
-                let eq_s         = get(line_comp, 2)
-                let name_right   = get(line_comp, 3)
-                let comment      = get(line_comp, 4)
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
                 let assign_s     = "assign"
-            elseif (line_str =~ '^\s*w.*')
-                let line_comp = matchlist(line_str,'^\s*\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+            elseif (line_str =~ '^\s*\w.*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
-                let name_left    = get(line_comp, 1)
-                let eq_s         = get(line_comp, 2)
-                let name_right   = get(line_comp, 3)
-                let comment      = get(line_comp, 4)
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
                 let assign_s     = ""
             endif
 
@@ -398,8 +408,12 @@ function V_align_eval()
                 let name_right = printf('%-30s', name_right)
             endif
 
+            let indent_s  = printf('%s',indent_s)
+            let assign_s  = printf('%-s',assign_s)
+            let eq_s      = printf('%-2s',eq_s)
+            let comment   = printf('%-s',comment)
             "echo line_comp
-            let line_out  = printf('    %-s %-s %-2s %-s;%-s', assign_s, name_left, eq_s, name_right, comment)
+            let line_out  = indent_s . assign_s . name_left . eq_s . name_right . ";" . comment
             "echo line_out
             call setline(i, line_out)
         endif
