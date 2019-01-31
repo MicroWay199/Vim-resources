@@ -254,16 +254,28 @@ function V_align_io()
     let max_len = 0
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
-        if (line_str =~ '^\s*\(input\|inout\|output.*\)')
+        if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
-            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(,\|\)\s*\(\S.*\)$')
-           "echo line_comp
-            let io    = get(line_comp, 1)
-            let regw  = get(line_comp, 2)
-            let width = get(line_comp, 3)
-            let name  = get(line_comp, 4)
-            let comma = get(line_comp, 5)
-            let other = get(line_comp, 6)
+            if (line_str =~ '^\s*\(input\|output\).*')
+                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+               "echo line_comp
+                let io    = get(line_comp, 1)
+                let regw  = get(line_comp, 2)
+                let width = get(line_comp, 3)
+                let name  = get(line_comp, 4)
+                let comma = get(line_comp, 5)
+                let other = get(line_comp, 6)
+            else
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+               "echo line_comp
+                let io    = ""
+                let regw  = get(line_comp, 1)
+                let width = get(line_comp, 2)
+                let name  = get(line_comp, 3)
+                let comma = get(line_comp, 4)
+                let other = get(line_comp, 5)
+            endif
+            
             let len_name = strlen(name)
             if(len_name > max_len)
                 let max_len = len_name
@@ -279,7 +291,7 @@ function V_align_io()
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
-                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(,\|\)\s*\(\S.*\)$')
+                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = get(line_comp, 1)
                 let regw  = get(line_comp, 2)
@@ -288,7 +300,7 @@ function V_align_io()
                 let comma = get(line_comp, 5)
                 let other = get(line_comp, 6)
             else
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w\+\)\s*\(,\|\)\s*\(\S.*\)$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = ""
                 let regw  = get(line_comp, 1)
