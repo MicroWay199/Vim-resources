@@ -352,7 +352,7 @@ function V_align_eval()
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
           "  "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'\(\s*\)assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -397,7 +397,7 @@ function V_align_eval()
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
           "  "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'\(\s*\)assign\s+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -443,7 +443,7 @@ function V_align_eval()
             let eq_s      = printf('%-2s',eq_s)
             let comment   = printf('%-s',comment)
             "echo line_comp
-            let line_out  = indent_s . assign_s . name_left . eq_s . name_right . ";" . comment
+            let line_out  = indent_s . assign_s . " " . name_left . eq_s . name_right . ";" . comment
             "echo line_out
             call setline(i, line_out)
         endif
