@@ -252,6 +252,7 @@ function V_align_io()
     let line_begin = line("'<")
     let line_end   = line("'>")
     let max_len = 0
+    let max_wid = 0
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
@@ -282,6 +283,11 @@ function V_align_io()
             endif
             if(len_name > 30)
                 echom(name . "variable name too long")
+            endif
+
+            let len_wid = strlen(width)
+            if(len_wid > max_wid)
+                let max_wid = len_wid
             endif
         endif
     endfor
@@ -314,10 +320,20 @@ function V_align_io()
                 let name = printf('%-10s', name)
             elseif(max_len < 20)
                 let name = printf('%-20s', name)
-            elseif(max_len < 25)
-                let name = printf('%-25s', name)
-            else
+            elseif(max_len < 30)
                 let name = printf('%-30s', name)
+            else
+                let name = printf('%-40s', name)
+            endif
+
+            if(max_wid < 10)
+                let width = printf('%-10s', width)
+            elseif(max_wid < 20)
+                let width = printf('%-20s', width)
+            elseif(max_wid < 25)
+                let width = printf('%-25s', width)
+            else
+                let width = printf('%-30s', width)
             endif
 
             if (io == "")
@@ -326,7 +342,7 @@ function V_align_io()
                 let io = printf('    %-8s', io)
             endif
             "echo line_comp
-            let line_out_pre  = printf(' %-6s %-7s %-s %1s %-s', regw, width, name, comma, other)
+            let line_out_pre  = printf(' %-6s %-s %-s %1s %-s', regw, width, name, comma, other)
             let line_out = io . line_out_pre
             "echo line_out
             call setline(i, line_out)
