@@ -258,7 +258,7 @@ function V_align_io()
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
-                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = get(line_comp, 1)
                 let regw  = get(line_comp, 2)
@@ -267,7 +267,7 @@ function V_align_io()
                 let comma = get(line_comp, 5)
                 let other = get(line_comp, 6)
             else
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = ""
                 let regw  = get(line_comp, 1)
@@ -297,7 +297,7 @@ function V_align_io()
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
-                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = get(line_comp, 1)
                 let regw  = get(line_comp, 2)
@@ -306,7 +306,7 @@ function V_align_io()
                 let comma = get(line_comp, 5)
                 let other = get(line_comp, 6)
             else
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\([a-zA-Z0-9\[\]:_]\+\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io    = ""
                 let regw  = get(line_comp, 1)
