@@ -449,3 +449,36 @@ function V_wavedrom(n_len)
         endif " end repx
     endfor
 endfunction
+
+
+
+"command -range=% -nargs=+ Vseq :call V_seq(<f-args>) " <f-args>
+"会自动转换格式为函数只用的格式
+"command -range=% -nargs=+ Vseq :call V_seq(<q-args>) 
+
+nmap <Leader>vs :Vseq  
+command -range=% -nargs=1 Vseq :call V_seq(<args>) 
+function! V_seq(seq_str,start,num,step)
+    let seq_str = a:seq_str
+    let start   = str2nr(a:start)
+    let num     = str2nr(a:num)  
+    let step    = str2nr(a:step)
+    
+    let line_out = ''
+
+    for i_s in range(num)
+        let num_str = ''
+        let num_str_s = []
+        let num_str_l = 0
+        let num_str_o = ''
+        let num_dec = start + step * i_s
+        let num_str = printf('%d',num_dec)
+        let num_str = '0000' . num_str
+        let num_str_l = strlen(num_str)
+        let num_str_o = num_str[num_str_l-3] . num_str[num_str_l-2] . num_str[num_str_l-1]
+        let line_out = substitute(seq_str,"<seq>",num_str_o,"g")
+        call append((line('.')+i_s),line_out)
+    endfor
+
+
+endfunction
