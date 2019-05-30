@@ -1,7 +1,7 @@
-""¶ÔÆëverilog instanceÀı»¯
+""å¯¹é½verilog instanceä¾‹åŒ–
 "vmap <Leader>a :'<,'>s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "nmap <Leader>a :s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
-"ÉÏÊöÃüÁîÓÉÏÂÃæº¯ÊıÌæ´ú£¬¹¦ÄÜ¼¸ºõµÈ¼Û£¬Ö»ÊÇ¸ñÊ½»¯µÃ¸üºÃÒ»µã
+"ä¸Šè¿°å‘½ä»¤ç”±ä¸‹é¢å‡½æ•°æ›¿ä»£ï¼ŒåŠŸèƒ½å‡ ä¹ç­‰ä»·ï¼Œåªæ˜¯æ ¼å¼åŒ–å¾—æ›´å¥½ä¸€ç‚¹
 vmap <Leader>is :call V_align_inst_line()<CR>
 nmap <Leader>is :call V_align_inst_line()<CR>
 function V_align_inst_line()
@@ -12,7 +12,7 @@ function V_align_inst_line()
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\..*')
-            "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+            "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
            "let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}\))\(.*\)')
             let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\(\w*\S*\)\s*)\(.*\)')
@@ -42,7 +42,7 @@ function V_align_inst_line()
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\..*')
-            "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+            "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
             let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\(\w*\S*\)\s*)\(.*\)')
            "echo line_comp
@@ -86,7 +86,7 @@ function V_align_io()
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
-            "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+            "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
                 let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
@@ -125,7 +125,7 @@ function V_align_io()
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
-            "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+            "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
                 let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
@@ -197,7 +197,7 @@ function V_align_eval()
         let line_str  = getline(i)
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
-          "  "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+          "  "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
                 let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
@@ -242,7 +242,7 @@ function V_align_eval()
         let line_str  = getline(i)
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
-          "  "²Î¿¼º¯Êı£ºmatch matchlist subtitute
+          "  "å‚è€ƒå‡½æ•°ï¼šmatch matchlist subtitute
                 let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
@@ -454,10 +454,11 @@ endfunction
 
 
 "command -range=% -nargs=+ Vseq :call V_seq(<f-args>) " <f-args>
-"»á×Ô¶¯×ª»»¸ñÊ½Îªº¯ÊıÖ»ÓÃµÄ¸ñÊ½
+"ä¼šè‡ªåŠ¨è½¬æ¢æ ¼å¼ä¸ºå‡½æ•°åªç”¨çš„æ ¼å¼
 "command -range=% -nargs=+ Vseq :call V_seq(<q-args>) 
 
 ":Vseq 'xxx<seq>yyy<seq>',0,16,2
+":Vseq 'xxx<seq>yyy<seq>',0,16,-2
 nmap <Leader>vs :Vseq  
 command -range=% -nargs=1 Vseq :call V_seq(<args>) 
 function! V_seq(seq_str,start,num,step)
