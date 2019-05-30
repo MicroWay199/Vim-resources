@@ -298,6 +298,7 @@ endfunction
 
 vmap <Leader>vw :Vwavedrom 
 nmap <Leader>vw :Vwavedrom 
+":Vwavedrom 7
 command -range=% -nargs=+ Vwavedrom :call V_wavedrom(<args>) 
 function V_wavedrom(n_len)
     let line_begin = line("'<")
@@ -456,6 +457,7 @@ endfunction
 "会自动转换格式为函数只用的格式
 "command -range=% -nargs=+ Vseq :call V_seq(<q-args>) 
 
+":Vseq 'xxx<seq>yyy<seq>',0,16,2
 nmap <Leader>vs :Vseq  
 command -range=% -nargs=1 Vseq :call V_seq(<args>) 
 function! V_seq(seq_str,start,num,step)
