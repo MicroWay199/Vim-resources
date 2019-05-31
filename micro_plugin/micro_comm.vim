@@ -1,66 +1,67 @@
 "==================================================================
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"»ù±¾Éè¶¨
+"åŸºæœ¬è®¾å®š
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""set nu " ĞĞºÅ 
-"set relativenumber "Ïà¶ÔĞĞºÅ
-set mouse=a  "Ë«»÷Ñ¡ÖĞbar»òÕßtagsµÈ£¬Ë«»÷ÓĞĞ§
-set noerrorbells  " ²»ÈÃvim·¢³öÌÖÑáµÄµÎµÎÉù
-set gcr=a:blinkon0 "È¡Ïû¹â±êÉÁË¸
-" ÎÒµÄ×´Ì¬ĞĞÏÔÊ¾µÄÄÚÈİ£¨°üÀ¨ÎÄ¼şÀàĞÍºÍ½âÂë£©
-set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]    "ÏÔÊ¾ÎÄ¼şÃû: ×ÜĞĞÊı, ×ÜµÄ×Ö·ûÊı
+""set nu " è¡Œå· 
+"set relativenumber "ç›¸å¯¹è¡Œå·
+set mouse=a  "åŒå‡»é€‰ä¸­baræˆ–è€…tagsç­‰ï¼ŒåŒå‡»æœ‰æ•ˆ
+set noerrorbells  " ä¸è®©vimå‘å‡ºè®¨åŒçš„æ»´æ»´å£°
+set gcr=a:blinkon0 "å–æ¶ˆå…‰æ ‡é—ªçƒ
+" æˆ‘çš„çŠ¶æ€è¡Œæ˜¾ç¤ºçš„å†…å®¹ï¼ˆåŒ…æ‹¬æ–‡ä»¶ç±»å‹å’Œè§£ç ï¼‰
+set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]    "æ˜¾ç¤ºæ–‡ä»¶å: æ€»è¡Œæ•°, æ€»çš„å­—ç¬¦æ•°
 set ruler
 set magic
-"colorscheme night"ÉèÖÃÖ÷Ìâ 
-"colorscheme biogoo"ÉèÖÃÖ÷Ìâ 
-colorscheme molokai"ÉèÖÃÖ÷Ìâ 
+"colorscheme night"è®¾ç½®ä¸»é¢˜ 
+"colorscheme biogoo"è®¾ç½®ä¸»é¢˜ 
+colorscheme molokai"è®¾ç½®ä¸»é¢˜ 
 set cc=80 "hight 80th column  cc means colorcolumn also set corlorcolumn=80 work
-set cursorline "¸ßÁÁÏÔÊ¾µ±Ç°ĞĞ
-set cursorcolumn  "¸ßÁÁÏÔÊ¾µ±Ç°ÁĞ
+set cursorline "é«˜äº®æ˜¾ç¤ºå½“å‰è¡Œ
+set cursorcolumn  "é«˜äº®æ˜¾ç¤ºå½“å‰åˆ—
 ""can set several options operately
 "hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-"" sÊ¹ÓÃautocmdÀ´½â¾öºÍcolorshcemeÉè¶¨Ö®¼äµÄ³åÍ»
+"" sä½¿ç”¨autocmdæ¥è§£å†³å’Œcolorshcemeè®¾å®šä¹‹é—´çš„å†²çª
 autocmd BufRead,BufNew * hi CursorLine guibg=black 
 autocmd BufRead,BufNew * hi CursorColumn guibg=black 
-set nobackup                 " ÉèÖÃÎŞ±¸·İÎÄ¼ş
-"printfº¯Êı·µ»Ø¸ñÊ½»¯×Ö·û´®
-set backupdir=printf("%s,%s",getcmd()£¬"/vi_backup/")
+set nobackup                 " è®¾ç½®æ— å¤‡ä»½æ–‡ä»¶
+"printfå‡½æ•°è¿”å›æ ¼å¼åŒ–å­—ç¬¦ä¸²
+set backupdir=printf("%s,%s",getcmd()ï¼Œ"/vi_backup/")
 set noswapfile 
 set noundofile 
-let autosave = 300 "Ã¿300s×Ô¶¯±£´æÒ»´Î" "let as = 300  "as  ¾ÍÊÇautosaveµÄÒâË¼
-set showmatch               "´úÂëÆ¥Åä
-set laststatus=2            "×ÜÊÇÏÔÊ¾×´Ì¬ĞĞ
-set autoread                "ÎÄ¼şÔÚVimÖ®ÍâĞŞ¸Ä¹ı£¬×Ô¶¯ÖØĞÂ¶ÁÈë
+let autosave = 300 "æ¯300sè‡ªåŠ¨ä¿å­˜ä¸€æ¬¡" "let as = 300  "as  å°±æ˜¯autosaveçš„æ„æ€
+set showmatch               "ä»£ç åŒ¹é…
+set laststatus=2            "æ€»æ˜¯æ˜¾ç¤ºçŠ¶æ€è¡Œ
+set autoread                "æ–‡ä»¶åœ¨Vimä¹‹å¤–ä¿®æ”¹è¿‡ï¼Œè‡ªåŠ¨é‡æ–°è¯»å…¥
 syntax enable
 syntax on
-set ai                      "×Ô¶¯Ëõ½ø
-set autoindent              " ×Ô¶¯Ëõ½ø¶ÔÆë
+set ai                      "è‡ªåŠ¨ç¼©è¿›
+set autoindent              " è‡ªåŠ¨ç¼©è¿›å¯¹é½
 set smartindent
-set autochdir               "×Ô¶¯ÉèÖÃµ±Ç°Ä¿Â¼ÎªÕıÔÚ±à¼­µÄÄ¿Â¼
-set backspace=2             "ÉèÖÃÍË¸ñ¼ü¿ÉÓÃ
-set clipboard+=unnamed      " Óëwindows¹²Ïí¼ôÌù°å
-set guifont=Consolas:h12
-"set guifont=Courier\ New:h11   "\ Îª×ªÒå×Ö·û  ×ªÒå¿Õ¸ñ
-"autocmd GUIEnter * simalt ~x   "windowsÏÂÆô¶¯Ö®ºóÄ¬ÈÏ×î´ó»¯
-set guioptions=+m               "ÏÔÊ¾²Ëµ¥À¸£¬Èç¹û²»ÉèÖÃÔò¶¼ÏÔÊ¾
-"set guioptions=+T              "ÏÔÊ¾¹¤¾ßÀ¸,guioptionsÈç¹ûÉèÖÃÁËÔòÖ»ÄÜ¸³Ò»¸öÖµ£¬
+set autochdir               "è‡ªåŠ¨è®¾ç½®å½“å‰ç›®å½•ä¸ºæ­£åœ¨ç¼–è¾‘çš„ç›®å½•
+set backspace=2             "è®¾ç½®é€€æ ¼é”®å¯ç”¨
+set clipboard+=unnamed      " ä¸windowså…±äº«å‰ªè´´æ¿
+set guifont=Consolas:h12    " windowsè®¾ç½®æ–¹å¼ï¼Œå­—ä½“ä¸å­—ä½“å¤§å°ä¹‹é—´ä¸º:
+"set guifont=Consolas\ 12   " unixè®¾ç½®æ–¹å¼,å­—ä½“ä¸å­—ä½“å¤§å°ä¹‹é—´ä¸ºç©ºæ ¼ï¼Œ\ç”¨æ¥è½¬ä¹‰ç©ºæ ¼å­—ç¬¦
+"set guifont=Courier\ New:h11   "\ ä¸ºè½¬ä¹‰å­—ç¬¦  è½¬ä¹‰ç©ºæ ¼
+"autocmd GUIEnter * simalt ~x   "windowsä¸‹å¯åŠ¨ä¹‹åé»˜è®¤æœ€å¤§åŒ–
+set guioptions=+m               "æ˜¾ç¤ºèœå•æ ï¼Œå¦‚æœä¸è®¾ç½®åˆ™éƒ½æ˜¾ç¤º
+"set guioptions=+T              "æ˜¾ç¤ºå·¥å…·æ ,guioptionså¦‚æœè®¾ç½®äº†åˆ™åªèƒ½èµ‹ä¸€ä¸ªå€¼ï¼Œ
 
-set scrolloff=3                 "ÉèÖÃ¹â±êËùÔÚÎ»ÖÃ×î¸ßºÍ×îµÍµ½±ß½çĞĞÊıÎª3
+set scrolloff=3                 "è®¾ç½®å…‰æ ‡æ‰€åœ¨ä½ç½®æœ€é«˜å’Œæœ€ä½åˆ°è¾¹ç•Œè¡Œæ•°ä¸º3
 set incsearch
-set autoindent                  " ×Ô¶¯¶ÔÆë
-set softtabstop=4               "set tab = insertspace "Ëõ½ø¿í¶ÈÎª4¸ö×Ö·û"  
-set shiftwidth=4                "tab¿í¶ÈÎª4¸ö×Ö·û"  
+set autoindent                  " è‡ªåŠ¨å¯¹é½
+set softtabstop=4               "set tab = insertspace "ç¼©è¿›å®½åº¦ä¸º4ä¸ªå­—ç¬¦"  
+set shiftwidth=4                "tabå®½åº¦ä¸º4ä¸ªå­—ç¬¦"  
 "set tabstop=4  
-""±à¼­Ê±½«ËùÓĞtabÌæ»»Îª¿Õ¸ñ"  
+""ç¼–è¾‘æ—¶å°†æ‰€æœ‰tabæ›¿æ¢ä¸ºç©ºæ ¼"  
 set et  
-set expandtab                   " ½«Tab×Ô¶¯×ª»¯³É¿Õ¸ñ[ĞèÒªÊäÈëÕæÕıµÄTab¼üÊ±£¬Ê¹ÓÃ Ctrl+V + Tab]
-"set ft = c                     "filetypeÉè¶¨
+set expandtab                   " å°†Tabè‡ªåŠ¨è½¬åŒ–æˆç©ºæ ¼[éœ€è¦è¾“å…¥çœŸæ­£çš„Tabé”®æ—¶ï¼Œä½¿ç”¨ Ctrl+V + Tab]
+"set ft = c                     "filetypeè®¾å®š
 "
-syntax enable                " ´ò¿ªÓï·¨¸ßÁÁ
-syntax on                    " ¿ªÆôÎÄ¼şÀàĞÍÕì²â
-filetype indent on           " Õë¶Ô²»Í¬µÄÎÄ¼şÀàĞÍ²ÉÓÃ²»Í¬µÄËõ½ø¸ñÊ½
-filetype plugin on           " Õë¶Ô²»Í¬µÄÎÄ¼şÀàĞÍ¼ÓÔØ¶ÔÓ¦µÄ²å¼ş
-filetype plugin indent on    " ÆôÓÃ×Ô¶¯²¹È«
+syntax enable                " æ‰“å¼€è¯­æ³•é«˜äº®
+syntax on                    " å¼€å¯æ–‡ä»¶ç±»å‹ä¾¦æµ‹
+filetype indent on           " é’ˆå¯¹ä¸åŒçš„æ–‡ä»¶ç±»å‹é‡‡ç”¨ä¸åŒçš„ç¼©è¿›æ ¼å¼
+filetype plugin on           " é’ˆå¯¹ä¸åŒçš„æ–‡ä»¶ç±»å‹åŠ è½½å¯¹åº”çš„æ’ä»¶
+filetype plugin indent on    " å¯ç”¨è‡ªåŠ¨è¡¥å…¨
 
 
