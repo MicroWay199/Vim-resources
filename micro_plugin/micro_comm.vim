@@ -42,6 +42,7 @@ set backspace=2             "设置退格键可用
 set clipboard+=unnamed      " 与windows共享剪贴板
 set guifont=Consolas:h12    " windows设置方式，字体与字体大小之间为:
 "set guifont=Consolas\ 12   " unix设置方式,字体与字体大小之间为空格，\用来转义空格字符
+"set guifont=Monospace\ 12   " unix设置方式,字体与字体大小之间为空格，\用来转义空格字符
 "set guifont=Courier\ New:h11   "\ 为转义字符  转义空格
 "autocmd GUIEnter * simalt ~x   "windows下启动之后默认最大化
 set guioptions=+m               "显示菜单栏，如果不设置则都显示
