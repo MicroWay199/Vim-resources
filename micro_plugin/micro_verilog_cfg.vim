@@ -463,9 +463,20 @@ command -range=% -nargs=1 Vseq :call V_seq(<args>)
 
 function! V_seq(seq_str,start,num,step)
     let seq_str = a:seq_str
-    let start   = str2nr(a:start)
+    
     let num     = str2nr(a:num)  
     let step    = str2nr(a:step)
+    if(a:start =~ '[a-zA-Z]')
+        let is_char_seq = 1
+    else
+        let is_char_seq = 0
+    endif
+    if(is_char_seq == 1)
+       let start = char2nr(a:start)
+    else
+       let start = str2nr(a:start)
+    endif
+       
     let end_num = start + num *step
     let str_start = printf("%d",start)
     let str_end = printf("%d",end_num)
@@ -491,6 +502,10 @@ function! V_seq(seq_str,start,num,step)
         let num_str_p = num_str_l - str_len
        "let num_str_o = num_str[num_str_l-3] . num_str[num_str_l-2] . num_str[num_str_l-1]
         let num_str_o = strcharpart(num_str,num_str_p,str_len)
+        if(is_char_seq == 1)
+            let num_str_o_int = string2nr(num_str_o)
+            let num_str_o = nr2char(num_str_o_int)
+        endif
         let line_out = substitute(seq_str,"<seq>",num_str_o,"g")
         call append((line('.')+i_s),line_out)
     endfor
