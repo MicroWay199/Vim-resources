@@ -482,10 +482,14 @@ function! V_seq(seq_str,start,num,step)
     let str_end = printf("%d",end_num)
     let str_len_s = strlen(str_start)
     let str_len_e = strlen(str_end)
-    if(str_len_s > str_len_e)
-        let str_len = str_len_s
+    if(is_char_seq == 1)
+        let str_len = 1
     else
-        let str_len = str_len_e
+        if(str_len_s > str_len_e)
+            let str_len = str_len_s
+        else
+            let str_len = str_len_e
+        endif
     endif
     
     let line_out = ''
