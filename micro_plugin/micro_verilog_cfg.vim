@@ -500,15 +500,16 @@ function! V_seq(seq_str,start,num,step)
         let num_str_l = 0
         let num_str_o = ''
         let num_dec = start + step * i_s
-        let num_str = printf('%d',num_dec)
-        let num_str = '0000' . num_str
-        let num_str_l = strlen(num_str)
-        let num_str_p = num_str_l - str_len
-       "let num_str_o = num_str[num_str_l-3] . num_str[num_str_l-2] . num_str[num_str_l-1]
-        let num_str_o = strcharpart(num_str,num_str_p,str_len)
         if(is_char_seq == 1)
-            let num_str_o_int = string2nr(num_str_o)
+            let num_str_o_int = string2nr(num_str)
             let num_str_o = nr2char(num_str_o_int)
+        else
+            let num_str = printf('%d',num_dec)
+            let num_str = '0000' . num_str
+            let num_str_l = strlen(num_str)
+            let num_str_p = num_str_l - str_len
+           "let num_str_o = num_str[num_str_l-3] . num_str[num_str_l-2] . num_str[num_str_l-1]
+            let num_str_o = strcharpart(num_str,num_str_p,str_len)
         endif
         let line_out = substitute(seq_str,"<seq>",num_str_o,"g")
         call append((line('.')+i_s),line_out)
