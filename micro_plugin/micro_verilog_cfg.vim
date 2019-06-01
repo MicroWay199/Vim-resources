@@ -501,8 +501,7 @@ function! V_seq(seq_str,start,num,step)
         let num_str_o = ''
         let num_dec = start + step * i_s
         if(is_char_seq == 1)
-            let num_str_o_int = string2nr(num_str)
-            let num_str_o = nr2char(num_str_o_int)
+            let num_str_o = nr2char(num_dec)
         else
             let num_str = printf('%d',num_dec)
             let num_str = '0000' . num_str
