@@ -15,7 +15,7 @@ function V_align_inst_line()
             "参考函数：match matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
            "let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}\))\(.*\)')
-            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\(.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\s*\(\S*.*\)')
            "echo line_comp
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
@@ -44,7 +44,7 @@ function V_align_inst_line()
         if (line_str =~ '^\s*\..*')
             "参考函数：match matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
-            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\(.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\s*\(\S*.*\)')
            "echo line_comp
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
