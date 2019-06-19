@@ -13,7 +13,7 @@ function Commented()
    endif
 endf
 
-""map÷¥––shell√¸¡Ó
+""map√ñ¬¥√ê√êshell√É√º√Å√Æ
 "map <leader>c :silent !start cmd.exe /C echo HAHAHA &pause 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -39,6 +39,7 @@ func! CompileRunGcc()
 endfunc 
 
 source $VIMRUNTIME/macros/matchit.vim 
+runtime! macros/matchit.vim 
 "if not work well,use autocmd BufNweFile,BufRead *   let b:match_wrods 
 let b:match_wrods='\<begin\>:\<end\>'
                   \ .  '\<module\>:\<endmodule\>' 
