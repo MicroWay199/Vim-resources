@@ -2,8 +2,8 @@
 "vmap <Leader>a :'<,'>s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "nmap <Leader>a :s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "上述命令由下面函数替代，功能几乎等价，只是格式化得更好一点
-vmap <Leader>is :call V_align_inst_line()<CR>
-nmap <Leader>is :call V_align_inst_line()<CR>
+vmap <Leader>vs :call V_align_inst_line()<CR>
+nmap <Leader>vs :call V_align_inst_line()<CR>
 function V_align_inst_line()
     let line_begin = line("'<")
     let line_end   = line("'>")
@@ -15,11 +15,12 @@ function V_align_inst_line()
             "参考函数：match matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
            "let line_comp = matchlist(line_str,'\(\w\+\).*(\(\S*\{-}\))\(.*\)')
-            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\s*\(\S*.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\S\|\w.*\S\|\)\s*)\s*\(,\|\)\s*\(\S*.*\|\)')
            "echo line_comp
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
-            let other     = get(line_comp, 3)
+            let comma     = get(line_comp, 3)
+            let other     = get(line_comp, 4)
             let len_inst  = strlen(inst_name)
             let len_con   = strlen(con_name)
 
@@ -44,11 +45,13 @@ function V_align_inst_line()
         if (line_str =~ '^\s*\..*')
             "参考函数：match matchlist subtitute
           ""let line_comp = matchlist(line_str,'\(\w\+\).*(\(.*\))\(.*\)')
-            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\s*\(\S*.*\)')
+           "let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\w*\S*\)\s*)\s*\(\S*.*\)')
+            let line_comp = matchlist(line_str,'\.\s*\(\w\+\S*\)\s*(\s*\(\S\|\w.*\S\|\)\s*)\s*\(,\|\)\s*\(\S*.*\|\)')
            "echo line_comp
             let inst_name = get(line_comp, 1)
             let con_name  = get(line_comp, 2)
-            let other     = get(line_comp, 3)
+            let comma     = get(line_comp, 3)
+            let other     = get(line_comp, 4)
             if(max_inst < 10)
                 let inst_name = printf('%-10s', inst_name)
             elseif(max_inst < 20)
@@ -70,14 +73,14 @@ function V_align_inst_line()
             endif
            "echo max_inst . "  " . max_con
 
-            let line_out  = printf('    .%-s(%-s)%s', inst_name, con_name, other)
+            let line_out  = printf('    .%-s(%-s)%-2s%s', inst_name, con_name, comma, other)
             call setline(i, line_out)
         endif
     endfor
 endfunction
 
-vmap <Leader>if :call V_align_io()<CR>
-nmap <Leader>if :call V_align_io()<CR>
+vmap <Leader>vp :call V_align_io()<CR>
+nmap <Leader>vp :call V_align_io()<CR>
 function V_align_io()
     let line_begin = line("'<")
     let line_end   = line("'>")
@@ -180,8 +183,8 @@ function V_align_io()
     endfor
 endfunction
 
-vmap <Leader>ie :call V_align_eval()<CR>
-nmap <Leader>ie :call V_align_eval()<CR>
+vmap <Leader>ve :call V_align_eval()<CR>
+nmap <Leader>ve :call V_align_eval()<CR>
 function V_align_eval()
     let line_begin = line("'<")
     let line_end   = line("'>")

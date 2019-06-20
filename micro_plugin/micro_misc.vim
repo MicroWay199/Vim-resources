@@ -13,14 +13,14 @@ function Commented()
    endif
 endf
 
-""map√ñ¬¥√ê√êshell√É√º√Å√Æ
+""map÷¥––shell√¸¡Ó
 "map <leader>c :silent !start cmd.exe /C echo HAHAHA &pause 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Quickly Run
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <Leader>c :call CompileRunGcc()<CR>
+map <Leader>mc :call CompileRunGcc()<CR>
 
 func! CompileRunGcc()
     exec "w!" 
@@ -41,7 +41,18 @@ endfunc
 source $VIMRUNTIME/macros/matchit.vim 
 runtime! macros/matchit.vim 
 "if not work well,use autocmd BufNweFile,BufRead *   let b:match_wrods 
-let b:match_wrods='\<begin\>:\<end\>'
-                  \ .  '\<module\>:\<endmodule\>' 
-                  \ .  '\<case\>:\<endcase\>' "can added any pairs like this 
+let b:match_wrods='\<begin\>:\<end\>' .
+                \ '\<module\>:\<endmodule\>' .
+                \ '\<case\>:\<endcase\>' "can added any pairs like this 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Quickly replace
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Leader>mr :call V_quick_replace()<CR>
+
+func! V_quick_replace()
+    let old_word = expand("<cword>")
+    let new_word = input("replace " . old_word .  " by:")
+    let replace_cmd = printf('%%s/%s/%s/gc',old_word,new_word)
+    exec replace_cmd
+endfunc 
