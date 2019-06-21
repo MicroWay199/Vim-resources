@@ -201,7 +201,7 @@ function V_align_eval()
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
           "  "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -211,7 +211,7 @@ function V_align_eval()
                 let comment      = get(line_comp, 5)
                 let assign_s     = "assign "
             elseif (line_str =~ '^\s*\w.*')
-                let line_comp = matchlist(line_str,'\(\s*\)\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -246,7 +246,7 @@ function V_align_eval()
         if (line_str =~ '^\s*\w*.*')
             if (line_str =~ '^\s*assign\s+.*')
           "  "参考函数：match matchlist subtitute
-                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)assign\s\+\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*assign\s+\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -256,7 +256,7 @@ function V_align_eval()
                 let comment      = get(line_comp, 5)
                 let assign_s     = "assign "
             elseif (line_str =~ '^\s*\w.*')
-                let line_comp = matchlist(line_str,'\(\s*\)\(\w\S*\)\s*\(=\|<=\)\s*\(\w\S*\)\s*;\s*\(.*\)')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
