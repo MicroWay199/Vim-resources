@@ -53,6 +53,13 @@ map <Leader>mr :call V_quick_replace()<CR>
 func! V_quick_replace()
     let old_word = expand("<cword>")
     let new_word = input("replace " . old_word .  " by:")
-    let replace_cmd = printf('%%s/%s/%s/gc',old_word,new_word)
+    let range_r = input("replace @all file? if yes, input /gg/:")
+    let replace_range = "normal " . range_r
+    exec replace_range
+    let cur_pos   = getcurpos()
+    let cur_line  = cur_pos[1] 
+   "let replace_cmd = printf('%%s/%s/%s/gc',old_word,new_word)
+    let replace_cmd = cur_line . ",$" . "s/" . "\\<" . old_word . "\\>" . "/" . new_word . "/gc"
     exec replace_cmd
+  " do the command like : normal gg | 1,$s/old/new/gc
 endfunc 
