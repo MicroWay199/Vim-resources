@@ -13,7 +13,7 @@ function Commented()
    endif
 endf
 
-""map÷¥––shell√¸¡Ó
+""map√ñ¬¥√ê√êshell√É√º√Å√Æ
 "map <leader>c :silent !start cmd.exe /C echo HAHAHA &pause 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -54,8 +54,10 @@ func! V_quick_replace()
     let old_word = expand("<cword>")
     let new_word = input("replace " . old_word .  " by:")
     let range_r = input("replace @all file? if yes, input /gg/:")
-    let replace_range = "normal " . range_r
-    exec replace_range
+    if(range_r =~ ".*gg.*")
+        let replace_range = "normal " . range_r
+        exec replace_range
+    endif
     let cur_pos   = getcurpos()
     let cur_line  = cur_pos[1] 
    "let replace_cmd = printf('%%s/%s/%s/gc',old_word,new_word)
