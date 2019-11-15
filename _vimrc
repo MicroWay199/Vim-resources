@@ -33,10 +33,33 @@ endif
 "==================================================================
 "ÅäÖÃÁÐ±í¼ÓÔØ
 "==================================================================
-source $VIM\micro_plugin\micro_comm.vim
-source $VIM\micro_plugin\micro_keymap.vim
-source $VIM\micro_plugin\micro_file_header.vim
-source $VIM\micro_plugin\micro_misc.vim
-source $VIM\micro_plugin\micro_verilog_cfg.vim
-source $VIM\micro_plugin\micro_perl.vim
+let g:islinux = 0
+let g:iswindows = 0
+
+if(has("win32") || has("win64") || has("win95") || has("win16"))
+    let g:iswindows = 1
+else
+    let g:islinux = 1
+endif
+
+if(g:iswindows)
+    source $VIM\micro_plugin\micro_comm.vim
+    source $VIM\micro_plugin\micro_keymap.vim
+    source $VIM\micro_plugin\micro_file_header.vim
+    source $VIM\micro_plugin\micro_misc.vim
+    source $VIM\micro_plugin\micro_verilog_cfg.vim
+    source $VIM\micro_plugin\micro_perl.vim
+else 
+    source ~/.config/nvim/micro_plugin/micro_comm.vim
+    source ~/.config/nvim/micro_plugin/micro_keymap.vim
+    source ~/.config/nvim/micro_plugin/micro_file_header.vim
+    source ~/.config/nvim/micro_plugin/micro_misc.vim
+    source ~/.config/nvim/micro_plugin/micro_verilog_cfg.vim
+    source ~/.config/nvim/micro_plugin/micro_perl.vim
+endif
+
+"" windows 到 linux下，提示^M为未知命令，使用dos2unix命令
+"" 将windows下的换行符(\n\r)替换为linux下的换行符(\n)
+"" sudo apt install dos2unix
+"" dos2unix filename
 
