@@ -490,6 +490,11 @@ function V_inst()
     call setline(line("."),module_end) 
     exec "normal k"
     :s/,/ /g
+    exec "normal 'W" 
+    let open_sc_file = input("open module source file?:")
+    if(open_sc_file =~ ".*\(y\|Y\)")
+        exec "normal sp;gf"
+    endif
 endfunction
 
 function V_get_ports(line_begin,line_end)
