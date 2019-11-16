@@ -454,6 +454,108 @@ function V_wavedrom(n_len)
     endfor
 endfunction
 
+vmap <Leader>vt :call V_inst()<CR>
+nmap <Leader>vt :call V_inst()<CR>
+function V_inst()
+   "global mark
+    exec "normal mW"
+    exec "normal gf"
+    exec "normal gg"
+    /^\s*module
+    let line_begin = line(".")
+    let module_line = getline(".")
+    let line_comp = matchlist(module_line,'^\s*module\s*\(\w\+\)\s*(.*')
+    let module_name = get(line_comp, 1)
+    /^\s*);
+    let line_end = line(".")
+    echo line_begin
+    echo line_end
+    let name_with_io = V_get_ports(line_begin,line_end)
+   "global jump
+    exec "normal 'W" 
+    let module_name = toupper(module_name)
+    let module_inst = module_name . "  " . "U_" . module_name . "("
+    let module_end = ");"
+    exec "normal o"
+    "echo name_with_io
+    call setline(line("."),module_inst) 
+    "exec "normal o"
+    "call setline(line("."),name_with_io)
+    for item in name_with_io
+        exec "normal o"
+        let item_out = "    " . item
+        call setline(line("."),item_out)
+    endfor
+    exec "normal o"
+    call setline(line("."),module_end) 
+    exec "normal k"
+    :s/,/ /g
+endfunction
+
+function V_get_ports(line_begin,line_end)
+    let line_begin = str2nr(a:line_begin)  
+    let line_end   = str2nr(a:line_end)
+    let max_len = 0
+    let io_s = ""
+    let name_s = ""
+    let name_list = []
+    let name_list_out = []
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*\(input\|output\).*')
+            "参考函数：match matchlist subtitute
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+            "echo line_comp
+            let io    = get(line_comp, 1)
+            let regw  = get(line_comp, 2)
+            let width = get(line_comp, 3)
+            let name  = get(line_comp, 4)
+            let comma = get(line_comp, 5)
+            let other = get(line_comp, 6)
+                
+            let len_name = strlen(name)
+            if(len_name > max_len)
+                let max_len = len_name
+            endif
+            if(io == "input") 
+                let io = "I_p"
+            elseif(io == "output") 
+                let io = "O_p"
+            else 
+                let io = "unknown"
+            endif
+            echo name 
+            let name_with_io = io . "," . name
+            let name_list = add(name_list,name_with_io)
+            "echo name_list
+        endif
+    endfor
+
+    for item in name_list
+        let [io_s,name_s] = split(item,",")
+            if(max_len < 10)
+                let name_s = printf('%-10s', name_s)
+            elseif(max_len < 20)
+                let name_s = printf('%-20s', name_s)
+            elseif(max_len < 30)
+                let name_s = printf('%-30s', name_s)
+            elseif(max_len < 40)
+                let name_s = printf('%-40s', name_s)
+            else 
+                let name_s = printf('%-50s', name_s)
+            endif
+
+            "echo line_comp
+            let name_out = "." . name_s . "(" . name_s . ")" . ",//" . io_s 
+            "echo line_out
+            let name_list_out = add(name_list_out,name_out)
+    endfor
+    return name_list_out
+endfunction
+
+
+
+
 
 nmap <Leader>vs :Vseq
 "command -range=% -nargs=+ Vseq :call V_seq(<f-args>) 
