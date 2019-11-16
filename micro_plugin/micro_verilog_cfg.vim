@@ -493,7 +493,8 @@ function V_inst()
     exec "normal 'W" 
     let open_sc_file = input("open module source file?:")
     if(open_sc_file =~ ".*\(y\|Y\)")
-        exec "normal sp;gf"
+        :sp
+        exec "normal gf"
     endif
 endfunction
 
