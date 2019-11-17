@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg instance port align
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""对齐verilog instance例化
 "vmap <Leader>a :'<,'>s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
 "nmap <Leader>a :s/\(\w\+\).*(\(.*\))/\=printf("%-20s(%-20s)",submatch(1),submatch(2))<CR>
@@ -79,6 +82,9 @@ function V_align_inst_line()
     endfor
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg input and output port align
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap <Leader>vp :call V_align_io()<CR>
 nmap <Leader>vp :call V_align_io()<CR>
 function V_align_io()
@@ -183,6 +189,9 @@ function V_align_io()
     endfor
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg equalation align
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap <Leader>ve :call V_align_eval()<CR>
 nmap <Leader>ve :call V_align_eval()<CR>
 function V_align_eval()
@@ -299,6 +308,9 @@ function V_align_eval()
     endfor
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg drow simple waveform in verilog file
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap <Leader>vw :Vwavedrom 
 nmap <Leader>vw :Vwavedrom 
 ":Vwavedrom 7
@@ -445,7 +457,6 @@ function V_wavedrom(n_len)
                 let name_d = printf("%-30s",name)
             endif
 
-
             let line_u_s = printf("\\\\%-s    %-s",name_u,line_u)
             let line_d_s = printf("\\\\%-s SW:%-s   SD:%-s",name_d,line_d,dot)
             call setline(k,line_u_s)
@@ -454,12 +465,28 @@ function V_wavedrom(n_len)
     endfor
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg instant from module 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap <Leader>vt :call V_inst()<CR>
 nmap <Leader>vt :call V_inst()<CR>
 function V_inst()
    "global mark
+    :w! 
     exec "normal mW"
-    exec "normal gf"
+    let cur_pos     = getcurpos()
+    let cur_column  = cur_pos[2] 
+    let use_cur_file = input("use current cursor file to instant(y/n): ")
+
+    if(use_cur_file =~"y")
+        exec "normal gf"
+    else 
+        let input_file = input("the file use for instant : ")
+	let open_file_com = "e!" . input_file
+	exec open_file_com
+	echo input_file
+    endif
+
     exec "normal gg"
     /^\s*module
     let line_begin = line(".")
@@ -490,11 +517,19 @@ function V_inst()
     call setline(line("."),module_end) 
     exec "normal k"
     :s/,/ /g
+    :w! 
     exec "normal 'W" 
-    let open_sc_file = input("open module source file?:")
-    if(open_sc_file =~ ".*\(y\|Y\)")
+    let open_sc_file = input("open module source file for check?(y/n):")
+    if(open_sc_file =~ "y")
         :sp
-        exec "normal gf"
+	if(use_cur_file =~"y")
+            exec "normal 'W" 
+            let go_to_column = "normal" . cur_column . "l"
+            exec go_to_column
+            exec "normal gf"
+	else
+            exec open_file_com
+	endif
     endif
 endfunction
 
@@ -560,8 +595,9 @@ function V_get_ports(line_begin,line_end)
 endfunction
 
 
-
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Veriolg add increase or decrease sequence 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 nmap <Leader>vs :Vseq
 "command -range=% -nargs=+ Vseq :call V_seq(<f-args>) 
