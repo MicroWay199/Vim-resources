@@ -600,6 +600,9 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap <Leader>vc :call V_chk_rst()<CR>
 nmap <Leader>vc :call V_chk_rst()<CR>
+
+"字符串使用' ' 表示不做转义，所见即所得(特殊的为两个'，会被转义为一个')
+"字符串使用" "，表示做转义
 function V_chk_rst()
     exec "normal gg"
     while search("^\s*always.*rst.*","W") > 0
@@ -610,7 +613,7 @@ function V_chk_rst()
         let line_rst    = getline(line_rst_num)
         echo line_rst
         echo line_always
-        "match list must use ' ' not " ", do not know why
+        "match list shall use ' '
         let str_always_list  = matchlist(line_always,'^\s*always.*\(rst\w*\).*')
         let str_rst_list     = matchlist(line_rst   ,'^\s*if.*\(rst\w*\).*')
         echo str_rst_list
