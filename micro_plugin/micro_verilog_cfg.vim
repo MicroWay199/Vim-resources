@@ -596,70 +596,31 @@ endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Veriolg add increase or decrease sequence 
+"" Veriolg chk reset match 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-nmap <Leader>vs :Vseq
-"command -range=% -nargs=+ Vseq :call V_seq(<f-args>) 
-" <f-args>会自动转换格式为函数需要的格式
-":Vseq xxx<seq>yyy<seq> 0 16 2 此处不建议，因为插入序列中肯定有空格，空格认为是参数分割符
-"command -range=% -nargs=+ Vseq :call V_seq(<q-args>) 
-":Vseq 'xxx<seq>yyy<seq>',0,16,2
-":Vseq 'xxx<seq>yyy<seq>',0,16,-2
-command -range=% -nargs=1 Vseq :call V_seq(<args>) 
-
-function! V_seq(seq_str,start,num,step)
-    let seq_str = a:seq_str
-    
-    let num     = str2nr(a:num)  
-    let step    = str2nr(a:step)
-    if(a:start =~ '[a-zA-Z]')
-        let is_char_seq = 1
-    else
-        let is_char_seq = 0
-    endif
-    if(is_char_seq == 1)
-       let start = char2nr(a:start)
-    else
-       let start = str2nr(a:start)
-    endif
-       
-    let end_num = start + num *step
-    let str_start = printf("%d",start)
-    let str_end = printf("%d",end_num)
-    let str_len_s = strlen(str_start)
-    let str_len_e = strlen(str_end)
-    if(is_char_seq == 1)
-        let str_len = 1
-    else
-        if(str_len_s > str_len_e)
-            let str_len = str_len_s
-        else
-            let str_len = str_len_e
+vmap <Leader>vc :call V_chk_rst()<CR>
+nmap <Leader>vc :call V_chk_rst()<CR>
+function V_chk_rst()
+    exec "normal gg"
+    while search("^\s*always.*rst.*","W") > 0
+        let line_cur = line(".")
+        let line_always = getline(line_cur)
+        /^\s*if.*rst.*
+        let line_rst_num = line(".")
+        let line_rst    = getline(line_rst_num)
+        echo line_rst
+        echo line_always
+        "match list must use ' ' not " ", do not know why
+        let str_always_list  = matchlist(line_always,'^\s*always.*\(rst\w*\).*')
+        let str_rst_list     = matchlist(line_rst   ,'^\s*if.*\(rst\w*\).*')
+        echo str_rst_list
+        echo str_always_list
+        let str_always = get(str_always_list,1)
+        let str_rst    = get(str_rst_list,1)
+        if(str_always != str_rst)
+            echo printf("reset violation @line %d and line %d", line_cur,line_rst_num)
         endif
-    endif
-    
-    let line_out = ''
-
-    for i_s in range(num)
-        let num_str = ''
-        let num_str_s = []
-        let num_str_l = 0
-        let num_str_o = ''
-        let num_dec = start + step * i_s
-        if(is_char_seq == 1)
-            let num_str_o = nr2char(num_dec)
-        else
-            let num_str = printf('%d',num_dec)
-            let num_str = '0000' . num_str
-            let num_str_l = strlen(num_str)
-            let num_str_p = num_str_l - str_len
-           "let num_str_o = num_str[num_str_l-3] . num_str[num_str_l-2] . num_str[num_str_l-1]
-            let num_str_o = strcharpart(num_str,num_str_p,str_len)
-        endif
-        let line_out = substitute(seq_str,"<seq>",num_str_o,"g")
-        call append((line('.')+i_s),line_out)
-    endfor
-
+    endwhile
 
 endfunction
+
