@@ -50,12 +50,12 @@ if(g:iswindows)
     source $VIM\micro_plugin\micro_verilog_cfg.vim
     source $VIM\micro_plugin\micro_perl.vim
 else 
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_comm.vim
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_keymap.vim
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_file_header.vim
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_misc.vim
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_verilog_cfg.vim
-    source ~/V-github/vim-resources/trunk/micro_plugin/micro_perl.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_comm.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_keymap.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_file_header.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_misc.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_verilog_cfg.vim
+    source ~/v-github/vim-resources/trunk/micro_plugin/micro_perl.vim
 endif
 
 "" windows 到 linux下，提示^M为未知命令，使用dos2unix命令
