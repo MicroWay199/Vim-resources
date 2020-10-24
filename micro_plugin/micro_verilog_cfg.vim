@@ -219,8 +219,19 @@ function V_align_eval()
                 let name_right   = get(line_comp, 4)
                 let comment      = get(line_comp, 5)
                 let assign_s     = "assign "
-            else
-                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+            elseif (line_str =~ '<=*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
+                let assign_s     = ""
+            elseif (line_str =~ '=*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
@@ -264,8 +275,19 @@ function V_align_eval()
                 let name_right   = get(line_comp, 4)
                 let comment      = get(line_comp, 5)
                 let assign_s     = "assign "
-            else
-                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+            elseif (line_str =~ '<=*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\|<=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
+               "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
+               "echo line_comp
+                let indent_s     = get(line_comp, 1)
+                let name_left    = get(line_comp, 2)
+                let eq_s         = get(line_comp, 3)
+                let name_right   = get(line_comp, 4)
+                let comment      = get(line_comp, 5)
+                let assign_s     = ""
+            elseif (line_str =~ '=*')
+                let line_comp = matchlist(line_str,'\(\s*\)\(\w\|\S.*\S\)\s*\(=\)\s*\(\w\|\S.*\S\)\s*;\s*\(.*\)')
                "let line_comp = matchlist(line_str,'^\s*\(\w.*\)\s*\(=\|<=\)\s*\(\w.*\)\s*;\s*\(.*\)')
                "echo line_comp
                 let indent_s     = get(line_comp, 1)
