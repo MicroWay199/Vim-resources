@@ -18,19 +18,20 @@ let s:cpo_save = &cpoptions
 set cpoptions&vim
 
 " init options
-functon! s:initVar(var,value)
+function! s:InitVar(var,value)
+    echo a:value
     if !exists(a:var)
-        exec 'let' . a:var . '=' . "'" . a:value . "'"
+        exec 'let' . ' ' . a:var . '=' . "'" . a:value . "'"
 	return 1
     endif
     return 0
 endfunction
 
-call s:initVar(g:IrunOptions,"")
-call s:initVar(g:SlintOption,"")
+call s:InitVar('g:IrunOption',' ')
+call s:InitVar('g:SlintOption',' ')
 
 " get module 
-functon! s:Getmodule()
+function! s:Getmodule()
     for line in getline(1,line('$'))
         if line =~# '^\s*module\s\+\w+'
 	    let l:module = matchlist(line,'\s*module\s\+\(\w+\)')[1]
@@ -39,7 +40,7 @@ functon! s:Getmodule()
     endfor
 endfunction
 
-function! S:RunIrun(...)
+function! s:RunIrun(...)
     " get command input filelist 
     let l:filelist=join(a:000,' ')
     " get current file module name 
@@ -53,7 +54,7 @@ function! S:RunIrun(...)
     "set compiler, correspond to compiler/ncverilog.vim
     exec 'compiler ncverilog'
     " execute compiling
-    silent execute 'make' . g:Irunoption . ' ' . l:filelist . ' ' . expand(%) . '-top' . l:module
+    silent execute 'make' . g:IrunOption . ' ' . l:filelist . ' ' . expand(%) . '-top' . l:module
     let l:ret=system('rm ./INCA_libs -rf')
     exec 'copen'
 endfunction
