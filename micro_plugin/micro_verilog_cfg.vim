@@ -1,3 +1,6 @@
+
+map <F2> /^\.\w\+\s*(\1   "检查例化模块信号名是否一致
+"map <F2> %s/\d\+/\=submatch(0)+1/g  "所有两位以上数字加1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Veriolg instance port align
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -97,23 +100,27 @@ function V_align_io()
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
-                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                "let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                 let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
-                let io    = get(line_comp, 1)
-                let regw  = get(line_comp, 2)
-                let width = get(line_comp, 3)
-                let name  = get(line_comp, 4)
-                let comma = get(line_comp, 5)
-                let other = get(line_comp, 6)
+                let io      = get(line_comp, 1)
+                let regw    = get(line_comp, 2)
+                let signed  = get(line_comp, 3)
+                let width = get(line_comp, 4)
+                let name  = get(line_comp, 5)
+                let comma = get(line_comp, 6)
+                let other = get(line_comp, 7)
             else
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+               "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
-                let io    = ""
-                let regw  = get(line_comp, 1)
-                let width = get(line_comp, 2)
-                let name  = get(line_comp, 3)
-                let comma = get(line_comp, 4)
-                let other = get(line_comp, 5)
+                let io      = ""
+                let regw    = get(line_comp, 1)
+                let signed  = get(line_comp, 2)
+                let width   = get(line_comp, 3)
+                let name    = get(line_comp, 4)
+                let comma   = get(line_comp, 5)
+                let other   = get(line_comp, 6)
             endif
             
             let len_name = strlen(name)
@@ -136,23 +143,27 @@ function V_align_io()
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
-                let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                "let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                 let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
-                let io    = get(line_comp, 1)
-                let regw  = get(line_comp, 2)
-                let width = get(line_comp, 3)
-                let name  = get(line_comp, 4)
-                let comma = get(line_comp, 5)
-                let other = get(line_comp, 6)
+                let io      = get(line_comp, 1)
+                let regw    = get(line_comp, 2)
+                let signed  = get(line_comp, 3)
+                let width = get(line_comp, 4)
+                let name  = get(line_comp, 5)
+                let comma = get(line_comp, 6)
+                let other = get(line_comp, 7)
             else
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+               "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
-                let io    = ""
-                let regw  = get(line_comp, 1)
-                let width = get(line_comp, 2)
-                let name  = get(line_comp, 3)
-                let comma = get(line_comp, 4)
-                let other = get(line_comp, 5)
+                let io      = ""
+                let regw    = get(line_comp, 1)
+                let signed  = get(line_comp, 2)
+                let width   = get(line_comp, 3)
+                let name    = get(line_comp, 4)
+                let comma   = get(line_comp, 5)
+                let other   = get(line_comp, 6)
             endif
 
             if(max_len < 10)
@@ -181,7 +192,7 @@ function V_align_io()
                 let io = printf('    %-8s', io)
             endif
             "echo line_comp
-            let line_out_pre  = printf(' %-6s %-s %-s %1s %-s', regw, width, name, comma, other)
+            let line_out_pre  = printf(' %-6s %-6s %-s %-s %1s %-s', regw,signed, width, name, comma, other)
             let line_out = io . line_out_pre
             "echo line_out
             call setline(i, line_out)
@@ -513,22 +524,42 @@ function V_inst()
     /^\s*module
     let line_begin = line(".")
     let module_line = getline(".")
-    let line_comp = matchlist(module_line,'^\s*module\s*\(\w\+\)\s*(.*')
+    let line_comp = matchlist(module_line,'^\s*module\s*\(\w\+\)\s*.*')
     let module_name = get(line_comp, 1)
     /^\s*);
     let line_end = line(".")
     echo line_begin
     echo line_end
     let name_with_io = V_get_ports(line_begin,line_end)
+    let name_para    = V_get_para(line_begin,line_end)
+    "echo "get here"
    "global jump
     exec "normal 'W" 
     let module_name = toupper(module_name)
-    let module_inst = module_name . "  " . "U_" . module_name . "("
     let module_end = ");"
-    exec "normal o"
-    "echo name_with_io
-    call setline(line("."),module_inst) 
-    "exec "normal o"
+    if(empty(name_para)) " means len(name_para) == 0
+        let module_inst = module_name . "  " . "U_" . module_name . "("
+        exec "normal o"
+        "echo name_with_io
+        call setline(line("."),module_inst) 
+        "exec "normal o"
+    else
+        let module_inst = module_name . "  " . "#("
+        exec "normal o"
+        "echo name_with_io
+        call setline(line("."),module_inst) 
+        "exec "normal o"
+        for item in name_para
+            exec "normal o"
+            let item_out = "    " . item
+            call setline(line("."),item_out)
+        endfor
+        let module_inst = "U_" .  module_name .  "("
+        exec "normal o"
+        "echo name_with_io
+        call setline(line("."),module_inst) 
+        "exec "normal o"
+    endif
     "call setline(line("."),name_with_io)
     for item in name_with_io
         exec "normal o"
@@ -555,6 +586,62 @@ function V_inst()
     endif
 endfunction
 
+function V_get_para(line_begin,line_end)
+    let line_begin = str2nr(a:line_begin)  
+    let line_end   = str2nr(a:line_end)
+    let max_len = 0
+    let name_s = ""
+    let name_out = ""
+    let name_list = []
+    let name_list_out = []
+    for i in range(line_begin, line_end)
+        let line_str  = getline(i)
+        if (line_str =~ '^\s*parameter.*')
+            "参考函数：match matchlist subtitute
+            let line_comp = matchlist(line_str,'^\s*parameter\s\+\(\w\+\)\s*=.*')
+            "echo line_comp
+            let name     = get(line_comp, 1)
+                
+            let len_name = strlen(name)
+            if(len_name > max_len)
+                let max_len = len_name
+            endif
+            echo name 
+            let name_list = add(name_list,name)
+            "echo name_list
+        endif
+    endfor
+
+    let cur_num = 0
+    let len_name_list = len(name_list)
+    for item in name_list
+        let name_s = item
+            if(max_len < 10)
+                let name_s = printf('%-10s', name_s)
+            elseif(max_len < 20)
+                let name_s = printf('%-20s', name_s)
+            elseif(max_len < 30)
+                let name_s = printf('%-30s', name_s)
+            elseif(max_len < 40)
+                let name_s = printf('%-40s', name_s)
+            else 
+                let name_s = printf('%-50s', name_s)
+            endif
+
+            if(cur_num >= len_name_list -1) 
+                "echo line_comp
+                let name_out = "." . name_s . "(" . "INST_PARA" . "))"
+            else
+                let name_out = "." . name_s . "(" . "INST_PARA" . "),"
+                let cur_num = cur_num + 1
+            endif
+                "echo line_out
+            let name_list_out = add(name_list_out,name_out)
+    endfor
+    return name_list_out
+endfunction
+
+
 function V_get_ports(line_begin,line_end)
     let line_begin = str2nr(a:line_begin)  
     let line_end   = str2nr(a:line_end)
@@ -567,14 +654,15 @@ function V_get_ports(line_begin,line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|output\).*')
             "参考函数：match matchlist subtitute
-            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+            let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
             "echo line_comp
-            let io    = get(line_comp, 1)
-            let regw  = get(line_comp, 2)
-            let width = get(line_comp, 3)
-            let name  = get(line_comp, 4)
-            let comma = get(line_comp, 5)
-            let other = get(line_comp, 6)
+            let io     = get(line_comp, 1)
+            let regw   = get(line_comp, 2)
+            let signed = get(line_comp, 3)
+            let width  = get(line_comp, 4)
+            let name   = get(line_comp, 5)
+            let comma  = get(line_comp, 6)
+            let other  = get(line_comp, 7)
                 
             let len_name = strlen(name)
             if(len_name > max_len)
