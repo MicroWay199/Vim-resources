@@ -95,9 +95,11 @@ function V_align_io()
     let line_end   = line("'>")
     let max_len = 0
     let max_wid = 0
+    let is_para = 0
     for i in range(line_begin, line_end)
         let line_str  = getline(i)
         if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
+            let is_para = 0
             "参考函数：match matchlist subtitute
             if (line_str =~ '^\s*\(input\|output\).*')
                 "let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
@@ -135,69 +137,132 @@ function V_align_io()
             if(len_wid > max_wid)
                 let max_wid = len_wid
             endif
+        elseif (line_str =~ '^\s*parameter.*')
+            let is_para = 1
+            let line_comp = matchlist(line_str,'\s*parameter\s*\(\w\+\)\s*=\s*\([^\/\/,]*[^\s\/,]\)\s*\(,\|\)\s*\(\/\/\+.*\|\)')
+            let para       = get(line_comp, 1)
+            let para_val   = get(line_comp, 2)
+            let comma      = get(line_comp, 3)
+            let other      = get(line_comp, 4)
+            let para_val_list = matchlist(para_val,'\(.*\S\)\s*$')
+            let para_val   = get(para_val_list, 1)
+            "echo "test here"
+            "echo para_val
+
+            let len_name = strlen(para)
+            if(len_name > max_len)
+                let max_len = len_name
+            endif
+            if(len_name > 30)
+                echom(name . "variable name too long")
+            endif
+
+            let len_wid = strlen(para_val)
+            if(len_wid > max_wid)
+                let max_wid = len_wid
+            endif
         endif
     endfor
 
-    for i in range(line_begin, line_end)
-        let line_str  = getline(i)
-        if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
-            "参考函数：match matchlist subtitute
-            if (line_str =~ '^\s*\(input\|output\).*')
-                "let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
-                 let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
-               "echo line_comp
-                let io      = get(line_comp, 1)
-                let regw    = get(line_comp, 2)
-                let signed  = get(line_comp, 3)
-                let width = get(line_comp, 4)
-                let name  = get(line_comp, 5)
-                let comma = get(line_comp, 6)
-                let other = get(line_comp, 7)
-            else
-               "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
-               "echo line_comp
-                let io      = ""
-                let regw    = get(line_comp, 1)
-                let signed  = get(line_comp, 2)
-                let width   = get(line_comp, 3)
-                let name    = get(line_comp, 4)
-                let comma   = get(line_comp, 5)
-                let other   = get(line_comp, 6)
+    if(is_para == 1) 
+        for i in range(line_begin, line_end)
+            let line_str  = getline(i)
+            if (line_str =~ '^\s*parameter.*')
+                let line_comp = matchlist(line_str,'\s*parameter\s*\(\w\+\)\s*=\s*\([^\/\/,]*[^\s\/,]\)\s*\(,\|\)\s*\(\/\/\+.*\|\)')
+                    let para       = get(line_comp, 1)
+                    let para_val   = get(line_comp, 2)
+                    let comma      = get(line_comp, 3)
+                    let other      = get(line_comp, 4)
+                    let para_val_list = matchlist(para_val,'\(.*\S\)\s*$')
+                    let para_val   = get(para_val_list, 1)
             endif
 
             if(max_len < 10)
-                let name = printf('%-10s', name)
+                let para = printf('%-10s', para)
             elseif(max_len < 20)
-                let name = printf('%-20s', name)
+                let para = printf('%-20s', para)
             elseif(max_len < 30)
-                let name = printf('%-30s', name)
+                let para = printf('%-30s', para)
             else
-                let name = printf('%-40s', name)
+                let para = printf('%-40s', para)
             endif
 
-            if(max_wid < 10)
-                let width = printf('%-10s', width)
-            elseif(max_wid < 20)
-                let width = printf('%-20s', width)
-            elseif(max_wid < 25)
-                let width = printf('%-25s', width)
-            else
-                let width = printf('%-30s', width)
-            endif
-
-            if (io == "")
-                let io = ""
-            else
-                let io = printf('    %-8s', io)
-            endif
+             if(max_wid < 10)
+                 let para_val = printf('%-10s', para_val)
+             elseif(max_wid < 20)
+                 let para_val = printf('%-20s', para_val)
+             elseif(max_wid < 25)
+                 let para_val = printf('%-25s', para_val)
+             else
+                 let para_val = printf('%-30s', para_val)
+             endif
             "echo line_comp
-            let line_out_pre  = printf(' %-6s %-6s %-s %-s %1s %-s', regw,signed, width, name, comma, other)
-            let line_out = io . line_out_pre
+            let line_out  = printf('    parameter %s = %s %1s %-s', para,para_val,comma, other)
             "echo line_out
             call setline(i, line_out)
-        endif
-    endfor
+        endfor
+    else
+        for i in range(line_begin, line_end)
+            let line_str  = getline(i)
+            if (line_str =~ '^\s*\(input\|inout\|output\|reg\|wire\).*')
+                "参考函数：match matchlist subtitute
+                if (line_str =~ '^\s*\(input\|output\).*')
+                    "let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                     let line_comp = matchlist(line_str,'\(input\|output\)\s*\(reg\|wire\|\)\s*\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(,\|\)\s*\(\/\/.*\|\)\s*$')
+                   "echo line_comp
+                    let io      = get(line_comp, 1)
+                    let regw    = get(line_comp, 2)
+                    let signed  = get(line_comp, 3)
+                    let width = get(line_comp, 4)
+                    let name  = get(line_comp, 5)
+                    let comma = get(line_comp, 6)
+                    let other = get(line_comp, 7)
+                else
+                   "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                    let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                   "echo line_comp
+                    let io      = ""
+                    let regw    = get(line_comp, 1)
+                    let signed  = get(line_comp, 2)
+                    let width   = get(line_comp, 3)
+                    let name    = get(line_comp, 4)
+                    let comma   = get(line_comp, 5)
+                    let other   = get(line_comp, 6)
+                endif
+
+                if(max_len < 10)
+                    let name = printf('%-10s', name)
+                elseif(max_len < 20)
+                    let name = printf('%-20s', name)
+                elseif(max_len < 30)
+                    let name = printf('%-30s', name)
+                else
+                    let name = printf('%-40s', name)
+                endif
+
+                if(max_wid < 10)
+                    let width = printf('%-10s', width)
+                elseif(max_wid < 20)
+                    let width = printf('%-20s', width)
+                elseif(max_wid < 25)
+                    let width = printf('%-25s', width)
+                else
+                    let width = printf('%-30s', width)
+                endif
+
+                if (io == "")
+                    let io = ""
+                else
+                    let io = printf('    %-8s', io)
+                endif
+                "echo line_comp
+                let line_out_pre  = printf(' %-6s %-6s %-s %-s %1s %-s', regw,signed, width, name, comma, other)
+                let line_out = io . line_out_pre
+                "echo line_out
+                call setline(i, line_out)
+            endif
+        endfor
+    endif
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
