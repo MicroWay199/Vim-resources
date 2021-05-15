@@ -114,7 +114,7 @@ function V_align_io()
                 let other = get(line_comp, 7)
             else
                "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
-                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[^;]*\)\(;\)\s*\(\/\/.*\|\)\s*$')
                "echo line_comp
                 let io      = ""
                 let regw    = get(line_comp, 1)
@@ -123,6 +123,8 @@ function V_align_io()
                 let name    = get(line_comp, 4)
                 let comma   = get(line_comp, 5)
                 let other   = get(line_comp, 6)
+                let name_regx = matchlist(name,'\(\w.*\S\)\s*$')
+                let name    = get(name_regx, 1)
             endif
             
             let len_name = strlen(name)
@@ -219,7 +221,7 @@ function V_align_io()
                     let other = get(line_comp, 7)
                 else
                    "let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
-                    let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w[a-zA-Z0-9\[\]:_]*\)\s*\(;\)\s*\(\/\/.*\|\)\s*$')
+                    let line_comp = matchlist(line_str,'\s*\(reg\|wire\)\s*\(signed\|\)\s*\(\[.*\]\|\)\s*\(\w.*\)\(;\)\s*\(\/\/.*\|\)\s*$')
                    "echo line_comp
                     let io      = ""
                     let regw    = get(line_comp, 1)
@@ -228,6 +230,8 @@ function V_align_io()
                     let name    = get(line_comp, 4)
                     let comma   = get(line_comp, 5)
                     let other   = get(line_comp, 6)
+                    let name_regx = matchlist(name,'\(\w.*\S\)\s*$')
+                    let name    = get(name_regx, 1)
                 endif
 
                 if(max_len < 10)
