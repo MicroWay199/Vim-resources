@@ -171,37 +171,37 @@ function V_align_io()
             let line_str  = getline(i)
             if (line_str =~ '^\s*parameter.*')
                 let line_comp = matchlist(line_str,'\s*parameter\s*\(\w\+\)\s*=\s*\([^\/\/,]*[^\s\/,]\)\s*\(,\|\)\s*\(\/\/\+.*\|\)')
-                    let para       = get(line_comp, 1)
-                    let para_val   = get(line_comp, 2)
-                    let comma      = get(line_comp, 3)
-                    let other      = get(line_comp, 4)
-                    let para_val_list = matchlist(para_val,'\(.*\S\)\s*$')
-                    let para_val   = get(para_val_list, 1)
-            endif
+                let para       = get(line_comp, 1)
+                let para_val   = get(line_comp, 2)
+                let comma      = get(line_comp, 3)
+                let other      = get(line_comp, 4)
+                let para_val_list = matchlist(para_val,'\(.*\S\)\s*$')
+                let para_val   = get(para_val_list, 1)
 
-            if(max_len < 10)
-                let para = printf('%-10s', para)
-            elseif(max_len < 20)
-                let para = printf('%-20s', para)
-            elseif(max_len < 30)
-                let para = printf('%-30s', para)
-            else
-                let para = printf('%-40s', para)
-            endif
+                if(max_len < 10)
+                    let para = printf('%-10s', para)
+                elseif(max_len < 20)
+                    let para = printf('%-20s', para)
+                elseif(max_len < 30)
+                    let para = printf('%-30s', para)
+                else
+                    let para = printf('%-40s', para)
+                endif
 
-             if(max_wid < 10)
-                 let para_val = printf('%-10s', para_val)
-             elseif(max_wid < 20)
-                 let para_val = printf('%-20s', para_val)
-             elseif(max_wid < 25)
-                 let para_val = printf('%-25s', para_val)
-             else
-                 let para_val = printf('%-30s', para_val)
-             endif
-            "echo line_comp
-            let line_out  = printf('    parameter %s = %s %1s %-s', para,para_val,comma, other)
-            "echo line_out
-            call setline(i, line_out)
+                 if(max_wid < 10)
+                     let para_val = printf('%-10s', para_val)
+                 elseif(max_wid < 20)
+                     let para_val = printf('%-20s', para_val)
+                 elseif(max_wid < 25)
+                     let para_val = printf('%-25s', para_val)
+                 else
+                     let para_val = printf('%-30s', para_val)
+                 endif
+                "echo line_comp
+                let line_out  = printf('    parameter %s = %s %1s %-s', para,para_val,comma, other)
+                "echo line_out
+                call setline(i, line_out)
+            endif
         endfor
     else
         for i in range(line_begin, line_end)
