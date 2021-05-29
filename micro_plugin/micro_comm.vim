@@ -11,9 +11,10 @@ set gcr=a:blinkon0 "取消光标闪烁
 set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]    "显示文件名: 总行数, 总的字符数
 set ruler
 set magic
+set bg=light "set backgroud=light
 "colorscheme night"设置主题 
 "colorscheme biogoo"设置主题 
-colorscheme molokai"设置主题 
+colorscheme gruvbox "设置主题 
 set cc=80 "hight 80th column  cc means colorcolumn also set corlorcolumn=80 work
 set cursorline "高亮显示当前行
 set cursorcolumn  "高亮显示当前列
@@ -21,8 +22,8 @@ set cursorcolumn  "高亮显示当前列
 "hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "" s使用autocmd来解决和colorshceme设定之间的冲突
-autocmd BufRead,BufNew * hi CursorLine guibg=black 
-autocmd BufRead,BufNew * hi CursorColumn guibg=black 
+"autocmd BufRead,BufNew * hi CursorLine guibg=black 
+"autocmd BufRead,BufNew * hi CursorColumn guibg=black 
 set nobackup                 " 设置无备份文件
 "printf函数返回格式化字符串
 set backupdir=printf("%s,%s",getcmd()，"/vi_backup/")
