@@ -10,6 +10,6 @@ neovim:
 	rm -rf ~/.config/nvim/colors
 	rm -rf ~/.config/nvim
 	mkdir ~/.config/nvim
-	ln -s ~/github/vim-resources/_vimrc ~/.config/nvim/init.vim
-	ln -s ~/github/vim-resources/vimfiles/colors ~/.config/nvim/colors
+	cp ~/github/vim-resources/_vimrc ~/.config/nvim/init.vim
+	cp ~/github/vim-resources/vimfiles/* ~/.config/nvim/ -rf
 all:gvim neovim
